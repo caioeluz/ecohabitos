@@ -1,0 +1,26 @@
+<h2>Meus hábitos sustentáveis</h2>
+
+<form class="form" (ngSubmit)="adicionar()">
+  <input name="nome" [(ngModel)]="nome" placeholder="Ex.: Fui de bicicleta para a faculdade" />
+  <select name="categoria" [(ngModel)]="categoria">
+    @for (c of categorias; track c) {
+      <option [value]="c">{{ c }}</option>
+    }
+  </select>
+  <button type="submit" class="adicionar">Adicionar</button>
+</form>
+
+<p class="resumo">
+  Você já evitou <strong>{{ servico.co2Total().toFixed(1) }} kg</strong> de CO₂ com seus hábitos concluídos.
+</p>
+
+<ul class="lista">
+  @for (h of servico.habitos(); track h.id) {
+    <app-habito-item
+      [habito]="h"
+      (concluir)="servico.alternarConcluido($event)"
+      (remover)="servico.remover($event)" />
+  } @empty {
+    <p class="vazio">Nenhum hábito ainda. Adicione o primeiro acima! 🌱</p>
+  }
+</ul>

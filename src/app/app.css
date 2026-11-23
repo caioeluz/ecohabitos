@@ -1,0 +1,6 @@
+.topo { background: var(--verde); color: #fff; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.topo h1 { margin: 0; font-size: 1.4rem; }
+nav { display: flex; gap: 8px; }
+nav a { color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 8px; }
+nav a.ativo { background: rgba(255, 255, 255, 0.25); }
+.conteudo { max-width: 720px; margin: 0 auto; padding: 20px; }

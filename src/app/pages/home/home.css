@@ -1,0 +1,6 @@
+.form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.form input { flex: 1; min-width: 200px; }
+.adicionar { background: var(--verde); color: #fff; }
+.resumo { background: var(--verde-claro); padding: 10px 14px; border-radius: 10px; }
+.lista { padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.vazio { color: var(--cinza); text-align: center; padding: 24px 0; }

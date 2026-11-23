@@ -1,0 +1,32 @@
+<h2>Meu impacto</h2>
+
+<section class="card">
+  <h3>🎯 Meta semanal</h3>
+  <p>
+    Meta:
+    <input type="number" min="1" step="1" [ngModel]="servico.metaSemanal()"
+           (ngModelChange)="alterarMeta($event)" /> kg de CO₂ evitado por semana
+  </p>
+  <div class="barra"><div class="preenchido" [style.width.%]="servico.progressoMeta()"></div></div>
+  <p class="legenda">
+    {{ servico.co2Semana().toFixed(1) }} kg nos últimos 7 dias ({{ servico.progressoMeta() }}% da meta)
+    @if (servico.progressoMeta() >= 100) { — meta batida! 🎉 }
+  </p>
+</section>
+
+<section class="card">
+  <h3>📊 CO₂ evitado por categoria</h3>
+  @for (c of porCategoria(); track c.nome) {
+    <div class="linha">
+      <span class="nome">{{ c.nome }}</span>
+      <div class="barra"><div class="preenchido" [style.width.%]="(c.co2 / maximo()) * 100"></div></div>
+      <span class="valor">{{ c.co2.toFixed(1) }} kg</span>
+    </div>
+  }
+  <p class="legenda">Total geral: {{ servico.co2Total().toFixed(1) }} kg de CO₂</p>
+</section>
+
+<section class="card dica">
+  <h3>💡 Dica do dia</h3>
+  <p>{{ dicaDoDia }}</p>
+</section>

@@ -1,0 +1,32 @@
+:root {
+  --verde: #2e7d32;
+  --verde-claro: #e8f5e9;
+  --texto: #1b2a1d;
+  --cinza: #6b7a6d;
+  --borda: #cfe3d1;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f5faf5;
+  color: var(--texto);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+input, select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: #fff;
+}

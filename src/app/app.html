@@ -1,0 +1,11 @@
+<header class="topo">
+  <h1>🌱 EcoHábitos</h1>
+  <nav>
+    <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Hábitos</a>
+    <a routerLink="/impacto" routerLinkActive="ativo">Meu impacto</a>
+  </nav>
+</header>
+
+<main class="conteudo">
+  <router-outlet />
+</main>

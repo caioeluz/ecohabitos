@@ -1,0 +1,10 @@
+.card { background: #fff; border: 1px solid var(--borda); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+.card h3 { margin-top: 0; }
+.card input[type='number'] { width: 80px; }
+.barra { flex: 1; height: 12px; background: var(--verde-claro); border-radius: 999px; overflow: hidden; }
+.preenchido { height: 100%; background: var(--verde); border-radius: 999px; transition: width 0.3s; }
+.linha { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.nome { width: 100px; }
+.valor { width: 70px; text-align: right; color: var(--cinza); }
+.legenda { color: var(--cinza); margin-bottom: 0; }
+.dica { background: var(--verde-claro); }
