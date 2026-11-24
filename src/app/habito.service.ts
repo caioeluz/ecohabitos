@@ -1,27 +1,26 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { CO2_POR_CATEGORIA, Categoria, Habito } from './habito.model';
 
-// Chaves usadas no localStorage do navegador.
+// NOs nomes usados para identificar os dados gaurdados no navegador
 const CHAVE_HABITOS = 'ecohabitos.lista';
 const CHAVE_META = 'ecohabitos.meta';
 
 @Injectable({ providedIn: 'root' })
 export class HabitoService {
-  // A lista fica guardada aqui, no service, para que todas as telas usem os mesmos dados.
-  // Quando o service é criado, já começa com o que estava salvo no navegador.
+  // Aqui guarda os hábitoss pra que todas as telas usem a mesma lista
+  // AQuando inicia o serviço, recupera os dados que ja foram salvos no navegador
   readonly habitos = signal<Habito[]>(this.carregar());
 
-  // Meta semanal de CO₂ evitado (kg). Também é persistida.
+   // Define a meta semanal de CO₂ que deseja evitar em quilogramas
   readonly metaSemanal = signal<number>(this.carregarMeta());
 
-  // ---- Valores calculados (recalculam sozinhos quando a lista muda) ----
-
-  // Total de CO₂ evitado em toda a história (só hábitos concluídos).
+  // Calcula os valores automaticamente sempre que os dados usados mudam
+  // Soma a quantidade de CO₂ evitada pelos habitos que já foram concluido
   readonly co2Total = computed(() =>
     this.habitos().filter(h => h.concluido).reduce((soma, h) => soma + h.co2, 0)
   );
 
-  // CO₂ evitado nos últimos 7 dias: base do diferencial criativo (meta semanal).
+  // Calcula o CO₂ evitdeixado de lado pelos hábitos concluidos nos últimos s7 dias
   readonly co2Semana = computed(() => {
     const limite = Date.now() - 7 * 24 * 60 * 60 * 1000;
     return this.habitos()
@@ -29,14 +28,14 @@ export class HabitoService {
       .reduce((soma, h) => soma + h.co2, 0);
   });
 
-  // Percentual da meta já atingido (limitado a 100 para a barra de progresso).
+  // Calcula quanto da meta semanal já foi alcançada, com limite de 100%
   readonly progressoMeta = computed(() => {
     const meta = this.metaSemanal();
     if (meta <= 0) return 0;
     return Math.min(100, Math.round((this.co2Semana() / meta) * 100));
   });
 
-  // ---- Ações da lista ----
+   // Métodos com função de adicionar, concluir e excluir hábitos
 
   adicionar(nome: string, categoria: Categoria): void {
     const novo: Habito = {
@@ -48,7 +47,7 @@ export class HabitoService {
       dataConclusao: null,
     };
     this.habitos.update(lista => [...lista, novo]);
-    this.salvar(); // cada mudança na lista é gravada na hora
+    this.salvar(); // Salvar a lista atualizada depois de adicionar um novo hábito
   }
 
   alternarConcluido(id: number): void {
@@ -58,7 +57,7 @@ export class HabitoService {
           ? {
               ...h,
               concluido: !h.concluido,
-              // ao concluir guardamos a data; ao desmarcar, limpamos
+               // Registra a data da conclusão ou a remove caso o habito seja desmarcado
               dataConclusao: !h.concluido ? new Date().toISOString() : null,
             }
           : h
@@ -77,17 +76,17 @@ export class HabitoService {
     localStorage.setItem(CHAVE_META, String(valor));
   }
 
-  // ---- Persistência ----
+  // Métodos ussados para salvar e recuperar os dados do navegador
 
-  // SALVAR: pega a lista atual, transforma em texto JSON (localStorage só guarda texto)
-  // e grava no navegador usando a chave CHAVE_HABITOS.
+  // Transforma.  a lista de hábitos para JSON e guarda o resultado no localStorage
+  // A chave CHAVE_HABITOS permite localizar esses dados mais tarde
   private salvar(): void {
     localStorage.setItem(CHAVE_HABITOS, JSON.stringify(this.habitos()));
   }
 
-  // CARREGAR: roda quando o service é criado (ao abrir a página). Lê o texto salvo,
-  // converte de volta para objetos com JSON.parse e devolve a lista.
-  // Se não tem nada salvo (primeiro acesso) ou o texto está quebrado, começa com lista vazia.
+  // Recuperar a lista salva e converter o JSON de  novo em objetos
+  // Se não tiver dados guardados ou ocorrer um erro na leitura
+  // retorna uma lista  vazia para permitir que o serviço continue funcionandoo-
   private carregar(): Habito[] {
     try {
       const texto = localStorage.getItem(CHAVE_HABITOS);
@@ -100,6 +99,6 @@ export class HabitoService {
   private carregarMeta(): number {
     const texto = localStorage.getItem(CHAVE_META);
     const numero = Number(texto);
-    return texto && !isNaN(numero) && numero > 0 ? numero : 10; // padrão: 10 kg por semana
+    return texto && !isNaN(numero) && numero > 0 ? numero : 10; // Utiliza 10 kg como a meta semanal inicial
   }
 }
